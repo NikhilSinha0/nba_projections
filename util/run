@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# TODO: If this script isn't run from the util directory still make it work
+
+cd ./cbb_scraper
+go build
+cd ..
+python3 get_data.py
+./cbb_scraper/cbb_scraper
