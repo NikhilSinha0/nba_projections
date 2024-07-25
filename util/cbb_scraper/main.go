@@ -15,7 +15,7 @@ func main() {
 
 	// var out []string
 
-	for i := 2003; i < 2004; i++ {
+	for i := 2003; i < 2025; i++ {
 		j := 1
 		init_link := fmt.Sprintf(BASE_URL, i, j)
 
