@@ -11,7 +11,7 @@ def main():
     args = parser.parse_args()
 
     if not os.path.exists("~/.kaggle/kaggle.json"):
-        print("Kaggle credentials not stored. Please ")
+        print("Kaggle credentials not stored. Please follow instructions to get a Kaggle API key (https://www.kaggle.com/docs/api)")
         sys.exit(1)
 
     # Looks weird but basically get the path for this script, then check if the ../data directory exists relative to this script
