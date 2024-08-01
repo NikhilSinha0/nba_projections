@@ -1,7 +1,10 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/gocolly/colly"
 )
@@ -11,24 +14,27 @@ const (
 )
 
 func main() {
-	c := colly.NewCollector()
 
-	// var out []string
+	var out [][]string
+	rows := []string{"Num", "Player", "Team", "GP", "MPG", "PPG", "FGM", "FGA", "FG%", "3PM", "3PA", "3P%", "FTM", "FTA", "FT%", "ORB", "DRB", "RPG", "APG", "SPG", "BPG", "TOV", "PF", "Year"}
+	out = append(out, rows)
 
 	for i := 2003; i < 2025; i++ {
+		c := colly.NewCollector()
 		j := 1
 		init_link := fmt.Sprintf(BASE_URL, i, j)
-
-		var sub []string
 
 		c.OnRequest(func(r *colly.Request) {
 			fmt.Println("Visiting:", r.URL)
 		})
 
 		c.OnHTML("tbody>tr", func(e *colly.HTMLElement) {
+			var sub []string
 			e.ForEach("td", func(k int, d *colly.HTMLElement) {
 				sub = append(sub, d.Text)
 			})
+			sub = append(sub, fmt.Sprintf("%d", i))
+			out = append(out, sub)
 		})
 
 		c.OnHTML("p>a", func(e *colly.HTMLElement) {
@@ -40,4 +46,33 @@ func main() {
 
 		c.Visit(init_link)
 	}
+
+	exec, err := os.Executable()
+	if err != nil {
+		printAndExit("Failed to get executable path", err)
+	}
+	dataPath := filepath.Join(filepath.Dir(filepath.Dir(filepath.Dir(exec))), "data")
+
+	f, err := os.Create(filepath.Join(dataPath, "college_stats.csv"))
+	if err != nil {
+		printAndExit("Failed to create college stats file", err)
+	}
+	w := csv.NewWriter(f)
+	for _, record := range out {
+		if err := w.Write(record); err != nil {
+			printAndExit("Failed to write record to college stats file", err)
+		}
+	}
+
+	w.Flush()
+
+	if err := w.Error(); err != nil {
+		printAndExit("Failed to completely write college stats file", err)
+	}
+}
+
+func printAndExit(msg string, err error) {
+	fmt.Println(msg)
+	fmt.Println(err)
+	os.Exit(1)
 }

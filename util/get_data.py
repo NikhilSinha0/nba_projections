@@ -10,7 +10,7 @@ def main():
     parser.add_argument('-f', '--force_refresh', help='Deletes existing data and refreshes if flag is set.', action="store_true")
     args = parser.parse_args()
 
-    if not os.path.exists("~/.kaggle/kaggle.json"):
+    if not os.path.exists(os.path.expanduser("~/.kaggle/kaggle.json")):
         print("Kaggle credentials not stored. Please follow instructions to get a Kaggle API key (https://www.kaggle.com/docs/api)")
         sys.exit(1)
 
@@ -25,14 +25,8 @@ def main():
         shutil.rmtree(data_path)
     os.makedirs(data_path)
 
-    kaggle.api.dataset_download_file("adityak2003/college-basketball-players-20092021", file_name="CollegeBasketballPlayers2022.csv", path=data_path)
-    kaggle.api.dataset_download_file("adityak2003/college-basketball-players-20092021", file_name="CollegeBasketballPlayers2009-2021.csv", path=data_path)
     kaggle.api.dataset_download_file("sumitrodatta/nba-aba-baa-stats", file_name="Player Per Game.csv", path=data_path)
     try:
-        subprocess.run(["unzip", os.path.join(data_path, "CollegeBasketballPlayers2022.csv.zip"), "-d", data_path], check=True)
-        subprocess.run(["rm", "-rf", os.path.join(data_path, "CollegeBasketballPlayers2022.csv.zip")], check=True)
-        subprocess.run(["unzip", os.path.join(data_path, "CollegeBasketballPlayers2009-2021.csv.zip"), "-d", data_path], check=True)
-        subprocess.run(["rm", "-rf", os.path.join(data_path, "CollegeBasketballPlayers2009-2021.csv.zip")], check=True)
         subprocess.run(["unzip", os.path.join(data_path, "Player%20Per%20Game.csv.zip"), "-d", data_path], check=True)
         subprocess.run(["rm", "-rf", os.path.join(data_path, "Player%20Per%20Game.csv.zip")], check=True)
         subprocess.run(["mv", os.path.join(data_path, "Player Per Game.csv"), os.path.join(data_path, "Player_Per_Game.csv")], check=True)
