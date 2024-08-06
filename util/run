@@ -3,8 +3,17 @@
 # TODO: If this script isn't run from the util directory still make it work
 # TODO: Accept the -f flag
 
+# Build dependent binaries
 cd ./cbb_scraper
+go mod tidy
 go build .
 cd ..
+cd ./hs_rankings_scraper
+go mod tidy
+go build .
+cd ..
+# Run script followed by binaries
+# TODO: just make the script run the binaries so you can get only parts of the data as desired
 python3 get_data.py -f
 ./cbb_scraper/cbb_scraper
+./hs_rankings_scraper/hs_rankings_scraper

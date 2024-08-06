@@ -1,3 +1,5 @@
 data/
 util/cbb_scraper/go.sum
 util/cbb_scraper/cbb_scraper
+util/hs_rankings_scraper/go.sum
+util/hs_rankings_scraper/hs_rankings_scraper

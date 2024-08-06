@@ -1,6 +1,6 @@
 ## NBA Projections
 
-This project aims to project a timeseries of a drafted player's NBA career based on their collegiate stats (or G League Ignite/international league stats), and some other information if it exists like a high school ranking or combine measurements. It will also find the most similar players using vector similarity. Importantly, this projection does not account for players who were drafted with no post-high school experience. This is because high school statistics are hard to come by in a standard format so projecting based off just a ranking is far too volatile. 
+This project aims to project a timeseries of a drafted player's NBA career based on their collegiate stats (or G League Ignite/international league stats when available), and some other information if it exists like a high school ranking or combine measurements. It will also find the most similar players using vector similarity. Importantly, this projection does not account for players who were drafted with no post-high school experience. This is because high school statistics are hard to come by in a standard format so projecting based off just a ranking is far too volatile. 
 
 ### Usage
 
@@ -8,7 +8,7 @@ This project runs through the command line, where you can input the information 
 
 ### How it works
 
-There are 2 models utilized in this project. The first model projects the length of the player's career. This model is built upon an LSTM with a feedforward network at the end. Once we generate a prediction for the length of the career, we pass the player's data into a second timeseries forecasting model to generate predictions for the player's statistics. We utilize the prediction from the first model as the forecasting window in the second model. This model is utilizing transformers based on the Informer and FEDFormer papers.
+There are 2 models utilized in this project. The first model projects the length of the player's career. This model is built upon an LSTM with a feedforward network at the end. Once we generate a prediction for the length of the career, we pass the player's data into a second sequence transduction model to generate predictions for the player's statistics. We utilize the prediction from the first model as the forecasting window in the second model. This model is utilizing transformers to effectively do sequence transduction. While not exactly reducible, this problem is somewhat akin to a next word prediction problem, where the word embeddings are effectively replaced with a feedforward network on top of the player's statistics represented as a vector.
 
 ### Tools
 
