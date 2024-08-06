@@ -29,7 +29,7 @@ def main():
     try:
         subprocess.run(["unzip", os.path.join(data_path, "Player%20Per%20Game.csv.zip"), "-d", data_path], check=True)
         subprocess.run(["rm", "-rf", os.path.join(data_path, "Player%20Per%20Game.csv.zip")], check=True)
-        subprocess.run(["mv", os.path.join(data_path, "Player Per Game.csv"), os.path.join(data_path, "Player_Per_Game.csv")], check=True)
+        subprocess.run(["mv", os.path.join(data_path, "Player Per Game.csv"), os.path.join(data_path, "nba_stats.csv")], check=True)
     except subprocess.CalledProcessError:
         print("Unzipping the data after downloading was not successful")
 
