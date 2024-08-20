@@ -1,5 +1,6 @@
 import os
 import sys
+import torch
 
 def main():
     # Looks weird but basically get the path for this script, then check if the ../data directory exists relative to this script
@@ -9,6 +10,13 @@ def main():
     if not os.path.exists(data_path) or not os.path.exists(os.path.join(data_path, "hs_rankings.csv")) or not os.path.exists(os.path.join(data_path, "nba_stats.csv")) or not os.path.exists(os.path.join(data_path, "college_stats.csv")):
         print("Couldn't find all dependencies for training. Please run ../util/run before running the training script")
         sys.exit(1)
+
+    try:
+        assert torch.cuda.is_available()
+        device = torch.device("cuda")
+    except:
+        device = torch.device("cpu")
+    print("Using device:", device)
 
 if __name__ == '__main__':
     main()
