@@ -52,6 +52,11 @@ def merge_and_torchify(hs_df: pd.DataFrame, college_df: pd.DataFrame, years_df: 
         nba_rows = cursor.fetchall(get_nba_pid_query, player)
         for i in range(len(nba_rows)):
             queue.append([None, nba_rows[0][0]])
-    
-    college_query_base = "SELECT Conference,GP,MPG,PPG,FGM,FGA,FG%,3PM,3PA,3P%,FTM,FTA,FT%,ORB,DRB,RPG,APG,SPG,BPG,TOV,PF,Year,Age FROM college WHERE Player=? ORDER BY Year ASC"
-    nba_query_base = "SELECT age,g,mp_per_game,fg_per_game,fga_per_game,fg_percent,x3p_per_game,x3pa_per_game,x3p_percent,ft_per_game,fta_per_game,ft_percent,orb_per_game,drb_per_game,trb_per_game,ast_per_game,stl_per_game,blk_per_game,tov_per_game,pf_per_game,pts_per_game FROM nba WHERE Player=? ORDER BY season ASC"
+
+    college_query_base = "SELECT Conference,GP,MPG,PPG,FGM,FGA,FG%,3PM,3PA,3P%,FTM,FTA,FT%,ORB,DRB,RPG,APG,SPG,BPG,TOV,PF,Year,Age FROM college WHERE PlayerID=? ORDER BY Year ASC"
+    nba_query_base = "SELECT age,g,mp_per_game,fg_per_game,fga_per_game,fg_percent,x3p_per_game,x3pa_per_game,x3p_percent,ft_per_game,fta_per_game,ft_percent,orb_per_game,drb_per_game,trb_per_game,ast_per_game,stl_per_game,blk_per_game,tov_per_game,pf_per_game,pts_per_game FROM nba WHERE player_id=? ORDER BY season ASC"
+    for item in queue:
+        if item[0] is not None:
+            college_rows = cursor.fetchall(college_query_base, item[0])
+        if item[1] is not None:
+            nba_rows = cursor.fetchall(nba_query_base, item[1])
