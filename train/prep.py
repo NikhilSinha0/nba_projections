@@ -1,9 +1,20 @@
 import pandas as pd
 import numpy as np
 import torch
+from torch.utils.data import Dataset
 import sqlite3
 
-def merge_and_torchify(hs_df: pd.DataFrame, college_df: pd.DataFrame, years_df: pd.DataFrame, nba_df: pd.DataFrame) -> torch.Tensor:
+class NBADataset():
+    def __init__(self, players):
+        self.players = players
+
+    def __len__(self):
+        return len(self.players)
+
+    def __getitem__(self, idx):
+        return self.players[idx]
+
+def merge_and_torchify(hs_df: pd.DataFrame, college_df: pd.DataFrame, years_df: pd.DataFrame, nba_df: pd.DataFrame) -> Dataset:
     
     # Sanitize names - remove commas and periods, and make lowercase
     college_df['Player'].str.replace('.,', "", regex=True).str.lower()

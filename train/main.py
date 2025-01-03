@@ -1,6 +1,9 @@
 import os
 import sys
+import pandas as pd
 import torch
+from torch.utils.data import DataLoader
+from matplotlib import pyplot as plt
 
 def main():
     # Looks weird but basically get the path for this script, then check if the ../data directory exists relative to this script
@@ -15,13 +18,6 @@ def main():
         if not os.path.exists(os.path.join(data_path, file)):
             print(f"Couldn't find all dependencies for training. Missing {file}. Please run ../util/run before running the training script")
             sys.exit(1)
-
-    try:
-        assert torch.cuda.is_available()
-        device = torch.device("cuda")
-    except:
-        device = torch.device("cpu")
-    print("Using device:", device)
 
 if __name__ == '__main__':
     main()
